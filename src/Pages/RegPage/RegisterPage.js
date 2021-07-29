@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import authOperations from '../../redux/auth/auth-operations';
 import Button from '@material-ui/core/Button';
 import styles from "../pages.module.css";
@@ -7,7 +7,8 @@ import styles from "../pages.module.css";
 
 
 
-export default function RegisterView({ onRegister }) {
+export default function RegisterView() {
+   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,17 +33,16 @@ export default function RegisterView({ onRegister }) {
     }
   };
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
-    onRegister(name, email, password);
-    setName('');
-      setEmail('');
-      setPassword('');
-
-//     this.setState({ name: '', email: '', password: '' });
-  };
-
+ const handleSubmit = useCallback(
+        e => {
+            e.preventDefault();
+     dispatch(authOperations.register(name, email, password));
+      setName('');
+       setEmail('');
+       setPassword('');
+        },
+        [dispatch, name, email, password],
+    );
 
   return (
     <div>
@@ -91,34 +91,3 @@ export default function RegisterView({ onRegister }) {
   );
 }
 
-// class RegisterView extends Component {
-//   state = {
-//     name: '',
-//     email: '',
-//     password: '',
-//   };
-
-//   handleChange = ({ target: { name, value } }) => {
-//     this.setState({ [name]: value });
-//   };
-
-//   handleSubmit = e => {
-//     e.preventDefault();
-
-//     this.props.onRegister(this.state);
-
-//     this.setState({ name: '', email: '', password: '' });
-//   };
-
-//   render() {
-//     const { name, email, password } = this.state;
-
-    
-//   }
-// }
-
-// const mapDispatchToProps = {
-//   onRegister: authOperations.register,
-// };
-
-// export default connect(null, mapDispatchToProps)(RegisterView);

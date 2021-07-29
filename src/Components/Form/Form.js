@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import shortid from "shortid";
 import styles from "./Form.module.css";
@@ -10,10 +10,19 @@ import * as contactsSelectors from '../../redux/contacts-selectors';
 import { ReactComponent as Add } from "../../icons/add.svg";
 
 export default function Form({ onAddContact}) {
-  
+ // const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   
+// useEffect(() => {dispatch ({
+//     dispatch(
+//       contactsOperations.addContact({
+//         name,
+//         number,
+//       }),
+//     ),
+// });
+
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -39,7 +48,7 @@ export default function Form({ onAddContact}) {
       //    return;
       // }
       console.log(name, number);
-      onAddContact(name, number);
+      contactsOperations.addContact(name, number);
 setName('');
       setNumber('');
        };

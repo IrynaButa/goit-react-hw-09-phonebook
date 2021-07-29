@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import authOperations from '../../redux/auth/auth-operations';
 import Button from '@material-ui/core/Button';
 import styles from "../pages.module.css";
 
-export default function LoginView ({ onLogin }) {
-  
+export default function LoginView () {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -26,13 +26,15 @@ export default function LoginView ({ onLogin }) {
     }
   };
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
-     onLogin(email, password);
-
-//     this.setState({ name: '', email: '', password: '' });
-  };
+  const handleSubmit = useCallback(
+        e => {
+            e.preventDefault();
+      dispatch(authOperations.logIn(email,password));
+       setEmail('');
+       setPassword('');
+        },
+        [dispatch, email, password],
+    );
   return (
       <div >
         <h1>Log in page</h1>
@@ -64,40 +66,8 @@ export default function LoginView ({ onLogin }) {
           
           <Button type="submit" variant="contained" color="secondary" href="#contained-buttons" onClick={handleSubmit}>
  Go
-</Button>
-            
-        
-          
+</Button>      
         </form>
       </div>
     );
 }
-// class LoginView extends Component {
-//   state = {
-//     email: '',
-//     password: '',
-//   };
-
-//   handleChange = ({ target: { name, value } }) => {
-//     this.setState({ [name]: value });
-//   };
-
-//   handleSubmit = e => {
-//     e.preventDefault();
-
-//     this.props.onLogin(this.state);
-
-//     this.setState({ name: '', email: '', password: '' });
-//   };
-
-//   render() {
-//     const { email, password } = this.state;
-
-    
-  
-
-// const mapDispatchToProps = {
-//   onLogin: authOperations.logIn,
-// };
-
-// export default connect(null, mapDispatchToProps)(LoginView);

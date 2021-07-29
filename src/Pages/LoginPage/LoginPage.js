@@ -29,7 +29,10 @@ export default function LoginView () {
   const handleSubmit = useCallback(
         e => {
             e.preventDefault();
-      dispatch(authOperations.logIn(email,password));
+      dispatch(authOperations.logIn({
+        email: email,
+        password: password,
+      }));
        setEmail('');
        setPassword('');
         },
